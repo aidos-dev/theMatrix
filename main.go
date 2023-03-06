@@ -15,26 +15,31 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 	// symbols variable contains all symbols to be displayed
 	symbols := symbols.Symb()
-	// consoleSize function returns the current width of the terminal window
-	consoleSize := console.ConsoleSize()
-	fmt.Printf("console size: %v\n", consoleSize)
 
 	oneLine := make(chan string)
+	consoleSize := make(chan int)
 
 	for {
+
+		go console.ConsoleSize(consoleSize)
+
 		go lineGenerator(symbols, consoleSize, oneLine)
 		time.Sleep(time.Second)
 		fmt.Println(<-oneLine)
 	}
 }
 
-func lineGenerator(symbols map[int]string, consoleSize int, oneLine chan string) {
+// lineGenerator function creates a string of random symbols and spaces
+func lineGenerator(symbols map[int]string, consoleSize chan int, oneLine chan string) {
 	res := ""
+
+	termSize := <-consoleSize
+
 	// spaceNum variable contains the possible number of white spaces in a row of symbols
-	spaceNum := consoleSize / 2
+	spaceNum := termSize / 2
 
 	// this loop creates a string of random symbols  with the size of terminal window
-	for i := 0; i < consoleSize; i++ {
+	for i := 0; i < termSize; i++ {
 
 		rand := rand.Intn(len(symbols))
 

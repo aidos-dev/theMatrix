@@ -8,8 +8,9 @@ import (
 	"strings"
 )
 
-// this function returns the current terminal width
-func ConsoleSize() int {
+// consoleSize function checks for the current size of the terminal in a goroutine and sends the width to lineGenerator via channel
+// with the help of this function the program printing is adaptive to terminal window width change
+func ConsoleSize(consoleSize chan int) {
 	cmd := exec.Command("stty", "size")
 	cmd.Stdin = os.Stdin
 	out, err := cmd.Output()
@@ -24,5 +25,5 @@ func ConsoleSize() int {
 		log.Fatal(err)
 	}
 
-	return width
+	consoleSize <- width
 }
