@@ -35,13 +35,16 @@ func lineGenerator(symbols map[int]string, consoleSize chan int, oneLine chan st
 
 	termSize := <-consoleSize
 
+	s1 := rand.NewSource(time.Now().UnixNano())
+	r1 := rand.New(s1)
+
 	// spaceNum variable contains the possible number of white spaces in a row of symbols
-	spaceNum := termSize / 2
+	spaceNum := termSize / 10
 
 	// this loop creates a string of random symbols  with the size of terminal window
 	for i := 0; i < termSize; i++ {
 
-		rand := rand.Intn(len(symbols))
+		rand := r1.Intn(len(symbols))
 
 		res += symbols[rand]
 
@@ -49,7 +52,12 @@ func lineGenerator(symbols map[int]string, consoleSize chan int, oneLine chan st
 
 	// this loop replaces some symbols with white spaces in random places
 	for i := 0; i < spaceNum; i++ {
-		spaceRand := rand.Intn(len(symbols))
+
+		s2 := rand.NewSource(time.Now().UnixNano())
+		r2 := rand.New(s2)
+
+		spaceRand := r2.Intn(termSize)
+
 		res = strings.Replace(res, string(res[spaceRand]), " ", 1)
 	}
 
