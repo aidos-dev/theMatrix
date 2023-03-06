@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"theMatrix/console"
-	"theMatrix/symbols"
+	"theMatrix/pkg/console"
+	"theMatrix/pkg/symbols"
 )
 
 func main() {
