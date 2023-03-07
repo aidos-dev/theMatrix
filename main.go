@@ -23,7 +23,7 @@ func main() {
 		go console.ConsoleSize(consoleSize)
 
 		go lineGenerator(symbols, consoleSize, oneLine)
-		time.Sleep(time.Millisecond * 700)
+		time.Sleep(time.Millisecond * 100)
 		fmt.Println(<-oneLine)
 	}
 }
